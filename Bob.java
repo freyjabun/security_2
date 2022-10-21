@@ -70,6 +70,18 @@ public class Bob {
         return null;
     }
 
+    public byte[] RSADecrypt(byte[] b){
+        try {
+            Cipher decryptCipher = Cipher.getInstance("RSA");
+            decryptCipher.init(Cipher.DECRYPT_MODE, Brivate);
+            return decryptCipher.doFinal(b);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void run(){
 
         KeyPair pair = generateKeyPair();
@@ -91,6 +103,11 @@ public class Bob {
             EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
             aliceKey = keyFactory.generatePublic(publicKeySpec);
             System.out.println("Alice file read");
+
+            RSADecrypt(in.readNBytes(messageLength));
+            System.out.println(RSADecrypt(in.readNBytes(messageLength)));
+            out.write(RSAEncrypt("hello client"));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

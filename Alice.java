@@ -34,8 +34,8 @@ public class Alice {
     public byte[] sendMessage(String msg) {
         try {
             out.write(RSAEncrypt(msg));
-            System.out.println(msg);
-            byte[] resp = in.readNBytes(messageLength); //blocking
+            System.out.println("Alice says " + msg);
+            byte[] resp = in.readNBytes(messageLength); 
             System.out.println(resp);
             return resp;
         } catch (IOException e) {
@@ -79,6 +79,18 @@ public class Alice {
         return null;
     }
 
+    public byte[] RSADecrypt(byte[] b){
+        try {
+            Cipher decryptCipher = Cipher.getInstance("RSA");
+            decryptCipher.init(Cipher.DECRYPT_MODE, alicePrivate);
+            return decryptCipher.doFinal(b);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void run(){
 
         KeyPair pair = generateKeyPair();
@@ -101,15 +113,19 @@ public class Alice {
             bobKey = keyFactory.generatePublic(publicKeySpec);
 
             System.out.println("Bob file read");
+
+            sendMessage("hello server");
+            RSADecrypt(in.readNBytes(messageLength));
+            System.out.println(RSADecrypt(in.readNBytes(messageLength)));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
     public static void main(String[] args) {
         Alice client = new Alice();
         client.startConnection("127.0.0.1", 6666);
         client.run();
-        client.sendMessage("hello server");
     }
 }
