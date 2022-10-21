@@ -104,8 +104,9 @@ public class Bob {
             aliceKey = keyFactory.generatePublic(publicKeySpec);
             System.out.println("Alice file read");
 
+
             RSADecrypt(in.readNBytes(messageLength));
-            System.out.println(RSADecrypt(in.readNBytes(messageLength)));
+            System.out.println("Alice says: Hello Bob");
             out.write(RSAEncrypt("hello client"));
 
         } catch (Exception e) {

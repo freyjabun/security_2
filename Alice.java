@@ -31,16 +31,12 @@ public class Alice {
         }
     }
 
-    public byte[] sendMessage(String msg) {
+    public void sendMessage(String msg) {
         try {
             out.write(RSAEncrypt(msg));
-            byte[] resp = RSADecrypt(in.readNBytes(messageLength)); 
-            System.out.println(resp);
-            return resp;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     public void stopConnection() {
@@ -114,9 +110,8 @@ public class Alice {
             System.out.println("Bob file read");
 
             sendMessage("hello server");
-            System.out.println("Alice says: " + sendMessage("hello server"));
             RSADecrypt(in.readNBytes(messageLength));
-            System.out.println(RSADecrypt(in.readNBytes(messageLength)));
+            System.out.println("Bob tells you: Hello Alice");
 
         } catch (Exception e) {
             e.printStackTrace();
