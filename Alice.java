@@ -34,8 +34,7 @@ public class Alice {
     public byte[] sendMessage(String msg) {
         try {
             out.write(RSAEncrypt(msg));
-            System.out.println("Alice says " + msg);
-            byte[] resp = in.readNBytes(messageLength); 
+            byte[] resp = RSADecrypt(in.readNBytes(messageLength)); 
             System.out.println(resp);
             return resp;
         } catch (IOException e) {
@@ -115,6 +114,7 @@ public class Alice {
             System.out.println("Bob file read");
 
             sendMessage("hello server");
+            System.out.println("Alice says: " + sendMessage("hello server"));
             RSADecrypt(in.readNBytes(messageLength));
             System.out.println(RSADecrypt(in.readNBytes(messageLength)));
 
