@@ -5,8 +5,11 @@ import java.security.*;
 import java.security.spec.*;
 
 import javax.crypto.Cipher;
+import javax.net.ssl.SSLSocket;
 
 public class Alice {
+    private int k = 100;
+
     private Socket aliceSocket;
     private OutputStream out;
     private InputStream in;
@@ -113,9 +116,27 @@ public class Alice {
             RSADecrypt(in.readNBytes(messageLength));
             System.out.println("Bob tells you: Hello Alice");
 
+            int m = roll();
+            byte[] r = hashCommit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int roll(){
+        return (int)(Math.random()*6)+1;
+    }
+
+    public byte[] hashCommit(){
+        String s = "";
+        int x;
+        for(int i = 0; i<k; i++){
+            x = (int)Math.round(Math.random());
+            s += Integer.toString(x);
+        }
+        System.out.println(s);
+    return s.getBytes();
     }
 
     public static void main(String[] args) {

@@ -6,13 +6,21 @@ import java.security.spec.EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
+import javax.net.ssl.*;
 
 public class Bob {
+    /* SSL Testing */
+    // private SSLServerSocket serverSocket2;
+    // private SSLSocket bobSocket2;
+
     private ServerSocket serverSocket;
     private Socket bobSocket;
+
+
     private OutputStream out;
     private InputStream in;
 
+    private int k = 100;
     static int g = 666;
     static int h = 420;
     static int p = 6661;
@@ -112,6 +120,21 @@ public class Bob {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] hashCommit(){
+        String s = "";
+        int x;
+        for(int i = 0; i<k; i++){
+            x = (int)Math.round(Math.random());
+            s += Integer.toString(x);
+        }
+        System.out.println(s);
+    return s.getBytes();
+    }
+
+    public int roll(){
+        return (int)(Math.random()*6)+1;
     }
 
     
