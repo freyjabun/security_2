@@ -126,25 +126,21 @@ public class Bob {
 
             var aliceR = RSADecrypt(in.readNBytes(messageLength));
             var aliceM = RSADecrypt(in.readNBytes(messageLength));
+
             String aliceRString = new String(aliceR);
-            String aliceMString = new String(aliceR);
+            String aliceMString = new String(aliceM);
+
             String aliceRM = aliceRString + aliceMString;
+
             System.out.println("Received r|m from Alice");
+
             String aliceCommitString = new String(aliceCommit);
 
 
-            System.out.println("AAAAAAAAAAAAAh");
-            System.out.println("aliceCommitString is: " + aliceCommitString);
-            System.out.println("AliceRM is: " + aliceRM);
-            System.out.println(aliceRM.hashCode());
-            System.out.println("AAAAAAAAAH");
-
             if (Integer.parseInt(aliceCommitString) == aliceRM.hashCode()){
-                System.out.println("Commit checks out brother");
-                var diceRoll = Integer.parseInt(m,2) ^ Integer.parseInt(aliceM.toString(), 2);
-                System.out.println("Final roll is: " + diceRoll);
-                // out.write(RSAEncrypt(Integer.toString(diceRoll)));
-                // System.out.println("Sent Bob's XOR Computation to Alice");
+                System.out.println("Commit checks out");
+                var diceRoll = (Integer.parseInt(m,2) ^ Integer.parseInt(aliceMString, 2) % 6) + 1;
+                System.out.println("The dice shows an exciting and cool: " + diceRoll);
             } 
             else System.out.println("Commit and message doesn't add up, killing myself immediately");
 

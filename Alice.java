@@ -67,7 +67,7 @@ public class Alice {
     public byte[] RSAEncrypt(String s){
         try {
             Cipher encryptCipher = Cipher.getInstance("RSA");
-            encryptCipher.init(Cipher.ENCRYPT_MODE, bobKey); //Change to bob key when work hehe
+            encryptCipher.init(Cipher.ENCRYPT_MODE, bobKey);
             return encryptCipher.doFinal(s.getBytes());
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +81,6 @@ public class Alice {
             decryptCipher.init(Cipher.DECRYPT_MODE, alicePrivate);
             return decryptCipher.doFinal(b);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;
@@ -130,10 +129,8 @@ public class Alice {
             var bobRoll = RSADecrypt(in.readNBytes(messageLength));
 
             sendMessage(r);
-            sendMessage(Integer.toString(m));
+            sendMessage(Integer.toBinaryString(m));
             System.out.println("Sending r|m to Bob");
-
-            // var bobXOR = RSADecrypt(in.readNBytes(messageLength));
 
         } catch (Exception e) {
             e.printStackTrace();
