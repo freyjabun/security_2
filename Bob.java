@@ -20,7 +20,6 @@ public class Bob {
     private OutputStream out;
     private InputStream in;
 
-    private int k = 100;
     static int g = 666;
     static int h = 420;
     static int p = 6661;
@@ -117,20 +116,41 @@ public class Bob {
             System.out.println("Alice says: Hello Bob");
             out.write(RSAEncrypt("hello client"));
 
+            String m = Integer.toBinaryString(roll());
+            //Receiving Alice's commit
+            var aliceCommit = RSADecrypt(in.readNBytes(messageLength));
+            System.out.println("Received Alice's commit");
+            //Sending sampled dice roll
+            out.write(RSAEncrypt(m));
+            System.out.println("Sending roll");
+
+            var aliceR = RSADecrypt(in.readNBytes(messageLength));
+            var aliceM = RSADecrypt(in.readNBytes(messageLength));
+            String aliceRString = new String(aliceR);
+            String aliceMString = new String(aliceR);
+            String aliceRM = aliceRString + aliceMString;
+            System.out.println("Received r|m from Alice");
+            String aliceCommitString = new String(aliceCommit);
+
+
+            System.out.println("AAAAAAAAAAAAAh");
+            System.out.println("aliceCommitString is: " + aliceCommitString);
+            System.out.println("AliceRM is: " + aliceRM);
+            System.out.println(aliceRM.hashCode());
+            System.out.println("AAAAAAAAAH");
+
+            if (Integer.parseInt(aliceCommitString) == aliceRM.hashCode()){
+                System.out.println("Commit checks out brother");
+                var diceRoll = Integer.parseInt(m,2) ^ Integer.parseInt(aliceM.toString(), 2);
+                System.out.println("Final roll is: " + diceRoll);
+                // out.write(RSAEncrypt(Integer.toString(diceRoll)));
+                // System.out.println("Sent Bob's XOR Computation to Alice");
+            } 
+            else System.out.println("Commit and message doesn't add up, killing myself immediately");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public byte[] hashCommit(){
-        String s = "";
-        int x;
-        for(int i = 0; i<k; i++){
-            x = (int)Math.round(Math.random());
-            s += Integer.toString(x);
-        }
-        System.out.println(s);
-    return s.getBytes();
     }
 
     public int roll(){

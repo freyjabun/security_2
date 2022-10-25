@@ -52,8 +52,6 @@ public class Alice {
         }
     }
 
-
-
     public static KeyPair generateKeyPair(){
         try {
             KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
@@ -117,7 +115,25 @@ public class Alice {
             System.out.println("Bob tells you: Hello Alice");
 
             int m = roll();
-            byte[] r = hashCommit();
+            System.out.println("M bit representation: " + Integer.toBinaryString(m));
+            String r = sampleKBitString();
+            String commit = r + Integer.toBinaryString(m);
+            
+            //Sending commit
+            System.out.println("Before hashcode: " + commit);
+            System.out.println("After hashcode: " + commit.hashCode());
+            sendMessage(Integer.toString(commit.hashCode()));
+            System.out.println("Sending commit to Bob");
+
+            //Receiving Bob's roll
+            System.out.println("Recieved Bob's roll");
+            var bobRoll = RSADecrypt(in.readNBytes(messageLength));
+
+            sendMessage(r);
+            sendMessage(Integer.toString(m));
+            System.out.println("Sending r|m to Bob");
+
+            // var bobXOR = RSADecrypt(in.readNBytes(messageLength));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,7 +144,7 @@ public class Alice {
         return (int)(Math.random()*6)+1;
     }
 
-    public byte[] hashCommit(){
+    public String sampleKBitString(){
         String s = "";
         int x;
         for(int i = 0; i<k; i++){
@@ -136,7 +152,7 @@ public class Alice {
             s += Integer.toString(x);
         }
         System.out.println(s);
-    return s.getBytes();
+    return s;
     }
 
     public static void main(String[] args) {
