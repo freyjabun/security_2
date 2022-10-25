@@ -18,9 +18,6 @@ public class Alice {
     static PrivateKey alicePrivate;
     static PublicKey bobKey;
 
-    static int g = 666;
-    static int h = 420;
-    static int p = 6661;
     static int messageLength = 256;
     
 
@@ -114,19 +111,17 @@ public class Alice {
             System.out.println("Bob tells you: Hello Alice");
 
             int m = roll();
-            System.out.println("M bit representation: " + Integer.toBinaryString(m));
             String r = sampleKBitString();
             String commit = r + Integer.toBinaryString(m);
             
             //Sending commit
-            System.out.println("Before hashcode: " + commit);
-            System.out.println("After hashcode: " + commit.hashCode());
             sendMessage(Integer.toString(commit.hashCode()));
             System.out.println("Sending commit to Bob");
 
             //Receiving Bob's roll
             System.out.println("Recieved Bob's roll");
             var bobRoll = RSADecrypt(in.readNBytes(messageLength));
+            //Doesn't need to be saved, but if I wanted to print it in Alice's terminal that is useful maybe
 
             sendMessage(r);
             sendMessage(Integer.toBinaryString(m));

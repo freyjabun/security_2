@@ -20,9 +20,6 @@ public class Bob {
     private OutputStream out;
     private InputStream in;
 
-    static int g = 666;
-    static int h = 420;
-    static int p = 6661;
     static int messageLength = 256;
 
     static PublicKey Boblic;
