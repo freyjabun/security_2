@@ -6,7 +6,6 @@ import java.security.spec.EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
-import javax.net.ssl.*;
 
 public class Bob {
     /* SSL Testing */
@@ -87,7 +86,6 @@ public class Bob {
     }
 
     public void run(){
-
         KeyPair pair = generateKeyPair();
         Boblic = pair.getPublic();
         Brivate = pair.getPrivate();
@@ -136,7 +134,7 @@ public class Bob {
 
             if (Integer.parseInt(aliceCommitString) == aliceRM.hashCode()){
                 System.out.println("Commit checks out");
-                var diceRoll = (Integer.parseInt(m,2) ^ Integer.parseInt(aliceMString, 2) % 6) + 1;
+                int diceRoll = ((Integer.parseInt(m,2) ^ Integer.parseInt(aliceMString, 2)) % 6) + 1;
                 System.out.println("The dice shows an exciting and cool: " + diceRoll);
             } 
             else System.out.println("Commit and message doesn't add up, killing myself immediately");
@@ -149,6 +147,24 @@ public class Bob {
     public int roll(){
         return (int)(Math.random()*6)+1;
     }
+    
+    // public void createKeystore(){
+    //     try {
+    //         KeyStore ks = KeyStore.getInstance("jks");
+    //         char[] pwdArray = "password".toCharArray();
+    //         ks.load(null, pwdArray);
+
+    //         try (FileOutputStream fos = new FileOutputStream("newKeyStoreFileName.jks")) {
+    //             ks.store(fos, pwdArray);
+    //         }
+
+    //         X509Certificate[] certificateChain = new X509Certificate[2];
+    //         ks.setKeyEntry("sso-signing-key", Brivate, pwdArray, certificateChain);
+
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     
     public static void main(String[] args) {
