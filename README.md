@@ -1,3 +1,3 @@
 # security_2
 
-##shit sucks
+# A brief exercise on TLS
